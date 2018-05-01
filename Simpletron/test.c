@@ -16,13 +16,14 @@
 	#define BRANCHNEG 41
 	#define BRANCHZERO 42
 	#define HALT 43
-	void decode(int , int *, int *);
-	int checkword(int cmd, int size);
-	int execute(int *, int *, int *);
-	void fetchexec(int *, int);
+void dump(int, int, int, int, int*, int*);
+	void decode(int , int*, int*);
+	int checkword(int, int);
+	void execute(int, int, int*,int*);
+	int fetch(int*, int);
 	int main()	{
-		int *operation;
-		int *addr;
+		int operation;
+		int addr;
 		int AllocationSize;
 		int *pc;//programCounter
 	char input;
@@ -39,144 +40,165 @@
 	
 
 	
-	for(int i = 0; i < AllocationSize; i++) {
+	
 	// looping through the array by using the user's specified value for the array size.
-	
-	//
-	while(1) {
-	         printf("%.2d Instruction: ", i);
-	         
-	         scanf("%d", &IR);
-	         *pc = IR;
-	         
-		 if(IR == -99999) {
-		    *pc = 0;
-		    i = AllocationSize; /* Terminate the for loop */
-		    break;
-		    
-	}
-	if( checkword(*pc, AllocationSize) ) {
-		    printf("==========Didnt Work=======%d\n", *pc);
-		    printf("=======Fix it or Begone====\n");
-		 }
-		 else
-	break;
-	}
-	} //end of input for loop
-	
-fetchexec(*pc, AllocationSize);
-	
-	
-	} //end of main
-	
-void fetchexec(int *pc)
-{
-	//IR = *pc;
+	int i = 0;
+	  int ins;
+	do{	
+	        printf("%.2d Instruction:", i);
+	        scanf("%d", &ins);
+	        mem[i] = ins;
+		    i++;
+	}	while(i < AllocationSize && ins < 99999);
+do{
+	fetch(&IR, *pc);
+	decode(IR, &operation, &addr);
+	execute(operation, addr, pc,mem);
+			
+		*pc++;
+}	while(*pc <= AllocationSize);
+pc = &mem[0];
+dump(IR, operation, addr, AllocationSize, pc, mem);
+}//end of main
 
-	do {
-		
-		
-		
-	}while (*pc != size);
-	
-	
+int fetch(int* IR, int pc){
+	*IR = pc;
 }
 	
+	
+	//IR = *pc
 	
 	
 	
 	
 	void decode(int IR, int *operation, int *addr){
+		
 		*operation = (IR / 1000);
-		printf("opcode is %d", *operation);
+		// printf("opcode is %d\n", *operation);
 		*addr = (IR % 1000);
-		printf("Address to input the memory is %d", *addr);
+		// printf("Address to input the memory is %d\n", *addr);
 		
 	}
-		
-		// for (pc = 0; *pc<AllocationSize; *pc++){
-		// 	printf("%d Instruction: ", pc);
-		// 	scanf("%d", &instructionRegister);
-		// 	mem[*pc] = instructionRegister;
-		// }
 	
-	int checkword(int cmd, int size){// the command and the maximum size of memory
-		if(cmd < 0 || cmd > 99999 || cmd % 1000 >= size) {
-		 return 1;
-		}
+	// int checkword(int cmd, int size){// the command and the maximum size of memory
+	// 	if(cmd < 0 || cmd > 99999 || cmd % 1000 >= size) {
+	// 	 return 0;
+	// 	}
 		
-		switch(cmd / 1000) {
-		 case READ:
-		 case WRITE:
-		 case LOAD:
-		 case STORE:
-		 case ADD:
-		 case SUBTRACT:
-		 case DIVIDE:
-		 case MULTIPLY:
-		 case BRANCH:
-		 case BRANCHNEG:
-		 case BRANCHZERO:
-		 case HALT:
-		 case 0:
-			break;
-		 default:
-		 return 1;
+	// 	switch(cmd / 1000) {
+	// 	 case READ:
+	// 	 case WRITE:
+	// 	 case LOAD:
+	// 	 case STORE:
+	// 	 case ADD:
+	// 	 case SUBTRACT:
+	// 	 case DIVIDE:
+	// 	 case MULTIPLY:
+	// 	 case BRANCH:
+	// 	 case BRANCHNEG:
+	// 	 case BRANCHZERO:
+	// 	 case HALT:
+	// 		return 1;
+	// 		break;
+	// 	 default:
+	// 	 puts("you done screwed something up");
+	// 	 return 0;
 		
-		}//checkword switch cmd
+	// 	}//checkword switch cmd
 		
-		return 0;
+	// 	return 0;
 		
-		}
-	int execute(int *operation, int *addr,int *pc){
+	// 	}
+	void execute(int operation, int addr,int* pc,int* mem){
 		int acc;
 		int err;
 		
-		switch(*operation) {
+		switch(operation) {
 		case READ:
 		   //read(mem[*addr],*addr);
-			printf("Insert a value for location %d ", *addr);
-			scanf("%p", &pc);
+			printf("Insert a value \n ");
+			// int v;
+			scanf("%d", &mem[addr]);
+			// mem[addr] = v;
+			
+				
 			break;
 		case WRITE:
-			printf("Value: %d", *pc);
+			printf("Value: %d\n", mem[addr]);
+			 
+					
 			break;
 		case LOAD:
-			acc = *pc;//move from accumulator to location in mem
+		
+			acc = addr;//move to accumulator from location in mem
+		// printf("moving acc value: %d to memory\n",acc);
+						
 			break;
 		case STORE:
-			*pc = acc; //Move from mem to Accumulator
+			addr = acc; //Move from acc to Memory
+			 printf("moving memory value: %d to Accumulator\n", acc);
+				
 			break;
 		case ADD:
-			acc += *pc; // add the value of the mem location to the 
+		printf("Adding memory value: %d to Accumulator\n",addr);
+			acc += addr; // add the value of the mem location to the 
 			if(acc > +99999 || acc < -99999)
 			{ //unless the value is outside of the usable range
 			  err = 1;
 			}
+			 
+	
 			break;
 		case SUBTRACT:
-			acc -= *pc;
+			acc -= addr;
 			if(acc > +99999 || acc < -99999)
 			{
 			  err = 1;
-	
 			}
+			 printf("Subtracting memory value: %d to Accumulator\n",addr);
+		
 			break;
 		case DIVIDE:
-			acc /= *pc;
-			if( !pc )
-			  err = 2;
+			acc /= addr;
+			if( !addr ){
+				
+			
+			  err = 2;}
+
 			break;
 		case MULTIPLY:
-			acc *= *pc;
+		printf("multiplying the acc: %d, by the value in memory: %d\n",acc,addr);
+			acc *= addr;
 			if(acc > +99999 || acc < -99999)
 			  err = 1;
+			 		
 			  break;
 		case HALT:
 			printf("halt");
-		}
-		pc++;
+			break;
+		case BRANCH:
+		    *pc = addr;
+		    break;
+		case BRANCHNEG:
+	    	if(acc < 0)
+	    		*pc = addr;
+	    		break;
+	    		
+		case BRANCHZERO:
+		    if(!acc){
+		      *pc = addr;
+			}
+			break;
+		default:
+		
+	    printf("simpletron complete successful\n");
+	break;
+	case SENTINEL:
+		exit(1);
+
 	}
+	
+}
 	
 	// void dump(int IR, *operation, *addr, *pc){
 	// 	for(int i = 0; i < AllocationSize; i++) {
@@ -187,3 +209,15 @@ void fetchexec(int *pc)
 		
 	// }
 	// }
+	
+	void dump(int IR, int operation, int addr,int Size, int* pc, int* mem){
+		printf("Data Dump:\t\twoooooo!\n");
+		
+		for(int a = 0; a < Size; a++){
+			
+    		decode(mem[a], &operation, &addr);
+    		printf("Instruction Counter: %d\topc: %d\t addr: %d\t value: %d\n",a, operation, addr, mem[addr]);
+    		
+		}
+		exit(1);
+	}

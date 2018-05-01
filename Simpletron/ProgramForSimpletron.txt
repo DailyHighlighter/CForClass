@@ -3,7 +3,7 @@
 	  02 20007, take value of 7 put it in the variable
 	  03 30008, add what is in 8 into what is in the accumulator(variable) 
 	  04 21009, place variable data into a place in memory
-	  05 11009, print what is in the 9place in memory
+	  05 11009, print what is in the 009 place in memory
 	  06 43000, halt. Stop the program.
 	  07 4 read here1
 	  08 6 read here 2
