@@ -1,11 +1,19 @@
 #To use this make file, navigate to the directory containing the makefile and type "make"
 #		
 
-all: main
+all: program1 program2 program3
 
-main: Lab10_00292846.c
-	gcc -std=c11 -o Lab10_00292846.exe Lab10_00292846.c
-	
+program1: MakeFloats.c
+	gcc -std=c11 -o MakeFloats.exe MakeFloats.c
+program2: 
+	gcc -std=c11 -o ReadFloats.exe ReadFloats.c
+program3: 
+	gcc -std=c11 -o changeVals.exe ChangeValues.c	
 clean:
-	rm Lab10_00292846.exe
+	rm MakeFloats.exe ReadFloats.exe
 
+
+
+
+
+ 
