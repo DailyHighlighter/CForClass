@@ -1,0 +1,23 @@
+Ben Martin
+00292846
+
+
+I was able to get part 1 and 2 done. 
+But could not for the life of me could I manage to make the 
+bitmap system work, at all.
+
+So this is what I Have.
+lots of little text files.
+
+the most important are in the main_area folder:
+-  Main.c
+-  Makefile
+-  bitmap.c
+-  bitmap.h
+
+
+For Part 1, execute main.exe with the name of the file you want to encrypt, and specify the output file name, 
+and select option 1.
+
+For Part 2, execute main.exe with the names of the two files you want to combine,
+say, Piece1.txt and Piece2.txt, and then specify the output file, say, Piece3.txt and select option 2.
